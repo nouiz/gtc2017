@@ -104,8 +104,8 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
   Some models that have been build with Theano.
   \begin{itemize}
   \item Neural Networks
-  \item Convolutional Neural Networks, AlexNet, OverFeat, GoogLeNet
-  \item RNN, CTC, LSTM, GRU
+  \item Convolutional NN: CNN, AlexNet, OverFeat, GoogLeNet, Inception, ...
+  \item Recurrent NN: RNN, CTC, LSTM, GRU, ...
   \item NADE, RNADE, MADE
   \item Autoencoders
   \item Generative Adversarial Nets
@@ -217,17 +217,18 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
     \begin{itemize}
       \item CUDA, CuBLAS, CuDNN, BLAS, SciPy, PyCUDA, Cython, Numba, ...
     \end{itemize}
-    \item Sparse matrices (CPU only)
-    \item Extensive unit-testing and self-verification
-    \item Extensible (You can create new operations as needed)
     \item Works on \begin{bf}Linux, OS X and Windows\end{bf}
-    \item \begin{bf}Multi-GPU\end{bf}
+    \item \begin{bf}Multi-GPU\end{bf} (via platoon)
     \item New GPU back-end:
       \begin{itemize}
-      \item \begin{bf}Float16\end{bf} new back-end (need cuda 7.5)
+      \item \begin{bf}Float16 storage\end{bf} new back-end (need cuda 7.5)
       \item \begin{bf}Multi dtypes\end{bf}
-      \item Multi-GPU support in the same process
+      \item \begin{bf}Much simpler installation on Windows\end{bf}
+%      \item Multi-GPU support in the same process
       \end{itemize}
+%    \item Sparse matrices (CPU only)
+    \item Extensive unit-testing and self-verification
+    \item Extensible (You can create new operations as needed)
   \end{itemize}
 \end{frame}
 
@@ -576,16 +577,27 @@ array(3.0)
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Example preset compilation modes}
+\begin{frame}{Interresting compilation configuration}
+  Some Theano flags:
   \begin{itemize}
-  \item FAST\_RUN: default. Fastest execution, slowest compilation
-  \item FAST\_COMPILE: Fastest compilation, slowest execution. No C code.
-  \item DEBUG\_MODE: Adds lots of checks.
-Raises error messages in situations other
-modes regard as fine.
-  \item optimizer=fast\_compile: as mode=FAST\_COMPILE, but with C code.
-  \item theano.function(..., mode=``FAST\_COMPILE'')
+  \item mode=FAST\_RUN: default. Fastest execution, slowest compilation
+  \item mode=FAST\_COMPILE: Fastest compilation, slowest execution. No C code.
+  \item mode=DEBUG\_MODE: Adds lots of checks.
+  \item optimizer=fast\_compile: mode=FAST\_COMPILE with C code.
+  \item optimizer=stabilize: optimizer=fast\_compile with stability optimization.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Theano flags}
+  Can be set globally:
+  \begin{itemize}
+  \item In a configuration file \~/.theanorc
   \item THEANO\_FLAGS=mode=FAST\_COMPILE python script.py
+  \end{itemize}
+
+  Sometimes as parameter of functions:
+  \begin{itemize}
+  \item theano.function(..., mode=``FAST\_COMPILE'')
   \end{itemize}
 \end{frame}
 
@@ -674,9 +686,9 @@ modes regard as fine.
 
 \begin{frame}{CuDNN}
   \begin{itemize}
-  \item V5 and V5.1 are supported.
-  \item V6 compile.
-  \item It is enabled automatically if available.
+  \item V5 and V5.1 are supported
+  \item V6 compile
+  \item It is enabled automatically if available
   \item Theano flag to get an error if can't be used: ``dnn.enabled=True''
   \item Theano flag to disable it: ``dnn.enabled=False''
   \end{itemize}
@@ -692,7 +704,7 @@ modes regard as fine.
   \item Set ``device=cuda'' (or a specific gpu, like ``cuda0'')
   \item Set ``floatX=float32''
   \item Optional: warn\_float64=\{'ignore', 'warn', 'raise', 'pdb'\}
-  \item Instead of Theano flags, user can call ``theano.sandbox.cuda.cuda('gpu0')''
+  \item Instead of Theano flags, user can call ``theano.sandbox.cuda.cuda('cuda0')''
   \end{itemize}
 \end{frame}
 
@@ -707,22 +719,14 @@ modes regard as fine.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{CuDNN}
-  \begin{itemize}
-  \item V3 and V4 is supported. (v5 soon)
-  \item It is enabled automatically if available.
-  \item Theano flag to get an error if can't be used: ``dnn.enabled=True''
-  \item Theano flag to disable it: ``dnn.enabled=False''
-  \end{itemize}
-\end{frame}
-
 \subsection{Debugging}
 \begin{frame}{Debugging}
   \begin{itemize}
   \item DebugMode: a mode that tests many things done by Theano (very slow)
-  \item NanGuardMode: a mode that help find the cause of nan in the graph.
+  \item NanGuardMode: a mode that help find the cause of nan in the graph
   \item Error message
   \item theano.printing.debugprint: print a textual representation of computation
+  \item profiling: To help know where time is spend
   \end{itemize}
 \end{frame}
 
@@ -1310,7 +1314,7 @@ Acknowledgments
 \end{center}
 \normalsize
 \begin{itemize}
-\item All people working or having worked at the LISA lab/MILA institute
+\item All people working or having worked at the MILA institute
 \item All Theano users/contributors
 \item Compute Canada, RQCHP, NSERC, NVIDIA, and Canada Research Chairs for providing funds, access to computing resources, hardware or GPU libraries.
 \end{itemize}
