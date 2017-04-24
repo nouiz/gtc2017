@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage[utf8x]{inputenc}
+\usepackage{multicol}
 %\logo{\includegraphics[width=.8in]{UdeM_NoirBleu_logo_Marie_crop}}
 \usepackage{listings}
 
@@ -12,7 +13,7 @@
 
 \mode<presentation>
 
-\title{Hands-on Lab: Deep Learning with the Theano Python Library}
+\title{Instructor-Led Lab: Image Classification using the Theano Python Library}
 
 \author{%
 \footnotesize
@@ -57,7 +58,7 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
   \item Python: OO coding language
   \item Numpy: $n$-dimensional array object and scientific computing toolbox
   \item SciPy: sparse matrix objects and more scientific computing functionality
-  \item libgpuarray: GPU $n$-dimensional array object in C for CUDA and OpenCL
+  \item libgpuarray: GPU $n$-dimensional array object in C for CUDA and OpenCL(not ready!)
   \item Theano: compiler/symbolic graph manipulation
     \begin{itemize}
     \item \bf{(Not a machine learning framework/software)}
@@ -124,16 +125,16 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 %%   \end{itemize}
 %% \end{frame}
 
-\begin{frame}{Project status?}
+\begin{frame}{Project status}
   \begin{itemize}
-    \item Mature: Theano has been developed and used since January 2008 (8 yrs old)
+    \item Mature: Theano has been developed and used since January 2008 (9 yrs old)
     \item Driven hundreds of research papers % Over a thousands of research paper
     \item Good user documentation
     \item Active mailing list with worldwide participants
     \item Core technology for Silicon-Valley start-ups
     \item Many contributors (some from outside our institute)
     \item Used to teach many university classes
-    \item Has been used for research at big compagnies
+    \item Used for research at big compagnies
     \item Theano 0.9 released 20th of March, 2017
   \end{itemize}
   Theano: \url{deeplearning.net/software/theano/}
@@ -661,9 +662,23 @@ modes regard as fine.
 \subsection{GPU}
 \begin{frame}{Enabling GPU}
   \begin{itemize}
-  \item Theano's current back-end only supports 32 bit on GPU
   \item libgpuarray (new-backend) supports all dtype
+    \begin{itemize}
+    \item including float16 for storage
+    \end{itemize}
+  \item Theano's old GPU back-end removed from the master of Theano
   \item CUDA supports float64, but it is slow on gamer GPUs
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{CuDNN}
+  \begin{itemize}
+  \item V5 and V5.1 are supported.
+  \item V6 compile.
+  \item It is enabled automatically if available.
+  \item Theano flag to get an error if can't be used: ``dnn.enabled=True''
+  \item Theano flag to disable it: ``dnn.enabled=False''
   \end{itemize}
 \end{frame}
 
@@ -674,7 +689,7 @@ modes regard as fine.
 
   To enable GPU:
   \begin{itemize}
-  \item Set ``device=gpu'' (or a specific gpu, like ``gpu0'')
+  \item Set ``device=cuda'' (or a specific gpu, like ``cuda0'')
   \item Set ``floatX=float32''
   \item Optional: warn\_float64=\{'ignore', 'warn', 'raise', 'pdb'\}
   \item Instead of Theano flags, user can call ``theano.sandbox.cuda.cuda('gpu0')''
@@ -704,9 +719,10 @@ modes regard as fine.
 \subsection{Debugging}
 \begin{frame}{Debugging}
   \begin{itemize}
-  \item DebugMode, NanGuardMode
+  \item DebugMode: a mode that tests many things done by Theano (very slow)
+  \item NanGuardMode: a mode that help find the cause of nan in the graph.
   \item Error message
-  \item theano.printing.debugprint
+  \item theano.printing.debugprint: print a textual representation of computation
   \end{itemize}
 \end{frame}
 
@@ -1074,7 +1090,7 @@ b = theano.shared(b_values)
         }
 \begin{lstlisting}
 # convolve input feature maps with filters
-conv_out = conv.conv2d(input=x, filters=W)
+conv_out = nnet.conv2d(input=x, filters=W)
 
 # pool each feature map individually,
 # using maxpooling
