@@ -1,3 +1,5 @@
+# Original file: https://github.com/Lasagne/Recipes/blob/master/modelzoo/vgg16.py
+
 # VGG-16, 16-layer model from the paper:
 # "Very Deep Convolutional Networks for Large-Scale Image Recognition"
 # Original source: https://gist.github.com/ksimonyan/211839e770f7b538e2d8
