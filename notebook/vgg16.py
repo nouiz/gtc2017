@@ -67,9 +67,7 @@ def build_model():
     return net
 
 
-def prep_image(url, mean_image):
-    ext = url.split('.')[-1]
-    im = plt.imread(io.BytesIO(open(url).read()), ext)
+def prep_image(im, mean_image):
     # Resize so smallest dim = 256, preserving aspect ratio
     h, w, _ = im.shape
 
