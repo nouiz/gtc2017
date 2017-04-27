@@ -81,10 +81,10 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
   Many [machine learning] library build on top of Theano
   \begin{itemize}
   \item Keras
-  \item blocks
   \item lasagne
-  \item sklearn-theano
   \item PyMC 3
+  \item blocks
+  \item sklearn-theano
   \item theano-rnn
   \item Morb
   \item ...
@@ -1256,6 +1256,107 @@ result, updates = theano.scan(
 \end{frame}
 \fi
 
+\section{Lasagne}
+\begin{frame}
+  \tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{What is Lasagne}
+  Lasagne is a thin framework on top of Theano.
+
+  \begin{itemize}
+  \item Do not hide Theano
+  \item Easily build Theano graph by using layers
+  \item Contain many preimplemented loss and optimizer
+  \item Do not include a training loop
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Lasagne MLP Example: Input Variables}
+
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+  input_var = T.tensor4('inputs')
+  target_var = T.ivector('targets')
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Lasagne MLP Example: Model}
+
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+# Input and dropout layer
+net = lasagne.layers.InputLayer(
+    shape=(None, 1, 28, 28), input_var=input_var)
+net = lasagne.layers.DropoutLayer(net, p=0.2)
+# Hidden layers and dropout:
+nonlin = lasagne.nonlinearities.rectify
+for _ in range(2):
+    net = lasagne.layers.DenseLayer(
+        network, 800, nonlinearity=nonlin)
+    net = lasagne.layers.dropout(network, p=0.5)
+# Output layer:
+softmax = lasagne.nonlinearities.softmax
+net = lasagne.layers.DenseLayer(network, 10,
+    nonlinearity=softmax)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Lasagne MLP Example: Train Function}
+
+\lstset{language=Python,
+        commentstyle=\itshape\color{blue},
+        stringstyle=\color{violet},
+        }
+\begin{lstlisting}
+pred = lasagne.layers.get_output(network)
+cat_cross_ent = lasagne.objectives.categorical_crossentropy
+loss = cat_cross_ent(pred, target_var)
+loss = loss.mean()
+
+params = lasagne.layers.get_all_params(
+    network, trainable=True)
+updates = lasagne.updates.nesterov_momentum(
+    loss, params, learning_rate=0.01,
+    momentum=0.9)
+
+train_fn = theano.function([input_var, target_var],
+                           loss, updates=updates)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Lasagne MLP Example: Test Function}
+
+  \lstset{language=Python,
+    commentstyle=\itshape\color{blue},
+    stringstyle=\color{violet},
+  }
+  \begin{lstlisting}
+test_pred = lasagne.layers.get_output(
+    network, deterministic=True)
+test_loss = cat_cross_ent(test_pred, target_var)
+test_loss = test_loss.mean()
+
+test_acc = T.mean(T.eq(T.argmax(test_pred, axis=1),
+                       target_var),
+                  dtype=theano.config.floatX)
+
+val_fn = theano.function([input_var, target_var],
+                         [test_loss, test_acc])
+\end{lstlisting}
+\end{frame}
+
 \section{Exercises}
 \begin{frame}
   \tableofcontents[currentsection]
@@ -1266,6 +1367,7 @@ result, updates = theano.scan(
 \item Introduction
 \item Exercises (Theano only exercises)
 \item lenet (small CNN model to quickly try it)
+\item Reuse VGG16 features
 \end{itemize}
 \end{frame}
 
