@@ -8,6 +8,7 @@
 \usepackage{multicol}
 %\logo{\includegraphics[width=.8in]{UdeM_NoirBleu_logo_Marie_crop}}
 \usepackage{listings}
+\usepackage{tikz}
 
 \newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
 
@@ -39,6 +40,26 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
  \hfill
  \includegraphics[width=.8in]{pics/UdeM_NoirBleu_logo_Marie_crop}
 \end{frame}
+
+\section{LABS}
+
+{ % all template changes are local to this group.
+  \setbeamertemplate{navigation symbols}{}
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[at=(current page.center)] {
+        \includegraphics[width=\paperwidth]{pics/Intro_Lab_Slides1.png}
+      };
+    \end{tikzpicture}
+  \end{frame}
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[at=(current page.center)] {
+        \includegraphics[width=\paperwidth]{pics/Intro_Lab_Slides2.png}
+      };
+    \end{tikzpicture}
+  \end{frame}
+}
 
 \begin{frame}{Slides}
 \begin{itemize}
