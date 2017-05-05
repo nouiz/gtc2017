@@ -1265,10 +1265,10 @@ result, updates = theano.scan(
   Lasagne is a thin framework/library on top of Theano.
   http://lasagne.readthedocs.org/
   \begin{itemize}
-  \item Do not hide Theano
-  \item Easily build Theano graph by using layers
-  \item Contain many preimplemented loss and optimizer
-  \item Do not include a training loop
+  \item Does not hide Theano
+  \item Easily build Theano graphs by using layers
+  \item Contains many preimplemented losses and optimizers
+  \item Does not include a training loop
   \end{itemize}
 \end{frame}
 
@@ -1320,7 +1320,8 @@ net = lasagne.layers.DenseLayer(network, 10,
         }
 \begin{lstlisting}
 pred = lasagne.layers.get_output(network)
-cat_cross_ent = lasagne.objectives.categorical_crossentropy
+cat_cross_ent = lasagne.objectives.
+    categorical_crossentropy
 loss = cat_cross_ent(pred, target_var)
 loss = loss.mean()
 
