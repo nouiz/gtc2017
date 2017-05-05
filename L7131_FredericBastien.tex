@@ -1372,7 +1372,6 @@ result, updates = theano.scan(
         stringstyle=\color{violet},
         }
 \begin{lstlisting}
-# Input and dropout layer
 net = lasagne.layers.InputLayer(
     shape=(None, 1, 28, 28), input_var=input_var)
 net = lasagne.layers.DropoutLayer(net, p=0.2)
@@ -1400,8 +1399,7 @@ net = lasagne.layers.DenseLayer(network, 10,
 pred = lasagne.layers.get_output(network)
 cat_cross_ent = lasagne.objectives.
     categorical_crossentropy
-loss = cat_cross_ent(pred, target_var)
-loss = loss.mean()
+loss = cat_cross_ent(pred, target_var).mean()
 
 params = lasagne.layers.get_all_params(
     network, trainable=True)
