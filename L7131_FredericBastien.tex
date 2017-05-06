@@ -33,16 +33,6 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
 \setbeamertemplate{navigation symbols}{}
 \begin{document}
 
-\begin{frame}[plain]
- \titlepage
- \vspace{-5em}
- \includegraphics[width=1.4in]{pics/MILA.png}
- \hfill
- \includegraphics[width=.8in]{pics/UdeM_NoirBleu_logo_Marie_crop}
-\end{frame}
-
-\section{LABS}
-
 { % all template changes are local to this group.
   \setbeamertemplate{navigation symbols}{}
   \begin{frame}[plain]
@@ -60,6 +50,17 @@ Presentation prepared with Pierre Luc Carrier and Arnaud Bergeron
     \end{tikzpicture}
   \end{frame}
 }
+
+\begin{frame}[plain]
+ \titlepage
+ \vspace{-5em}
+ \includegraphics[width=1.4in]{pics/MILA.png}
+ \hfill
+ \includegraphics[width=.8in]{pics/UdeM_NoirBleu_logo_Marie_crop}
+\end{frame}
+
+\section{LABS}
+
 
 \begin{frame}{Slides}
 \begin{itemize}
@@ -661,7 +662,7 @@ array(3.0)
   Some Theano flags:
   \begin{itemize}
   \item mode=FAST\_RUN: default. Fastest execution, slowest compilation
-  \item mode=FAST\_COMPILE: Fastest compilation, slowest execution. No C code.
+  \item mode=FAST\_COMPILE: Fastest compilation, slowest execution. No C code. No stability optimization.
   \item mode=DEBUG\_MODE: Adds lots of checks.
   \item optimizer=fast\_compile: mode=FAST\_COMPILE with C code.
   \item optimizer=stabilize: optimizer=fast\_compile with stability optimization.
@@ -698,13 +699,14 @@ array(3.0)
 \lstset{language=Python,
         commentstyle=\itshape\color{blue},
         stringstyle=\color{violet},
-        }
+        basicstyle=\scriptsize
+}
 \begin{lstlisting}
 >>> x = T.scalar('x')
 >>> y = 2. * x
 >>> g = T.grad(y, x)
-# Print the not optimized graph
 >>> theano.printing.pydotprint(g)
+# Print the not optimized graph
 \end{lstlisting}
 \includegraphics[width=0.75\textwidth]{pics/theano_grad.png}
 \end{frame}
@@ -1121,6 +1123,7 @@ train_model = theano.function(
 \lstset{language=Python,
         commentstyle=\itshape\color{blue},
         stringstyle=\color{violet},
+        basicstyle=\footnotesize
         }
 \begin{lstlisting}
 # Load from disk and put in shared variable.
@@ -1146,6 +1149,7 @@ layer0_input = x.reshape((batch_size, 1, 28, 28))
 \lstset{language=Python,
         commentstyle=\itshape\color{blue},
         stringstyle=\color{violet},
+        basicstyle=\footnotesize
         }
 \begin{lstlisting}
 image_shape=(batch_size, 1, 28, 28)
